@@ -20,10 +20,36 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+            'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/auth/login',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'signup' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/auth/signup',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'signup',
+                    ),
+                ),
+            ),
+            'forgot' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/auth/forgot',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'forgot',
+                    ),
+                ),
+            ),
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -52,9 +78,36 @@ return array(
             ),
         ),
     ),
-    'service_manager' => array(
+    'view_helpers' => array(
+        'factories' => array(
+            'flashMessage' => function($sm) {
+                $flashMessenger = $sm->getServiceLocator()
+                    ->get('ControllerPluginManager')
+                    ->get('flashmessenger');                                   
+                 $message = new Application\View\Helper\FlashMessages();
+                 $message->setFlashMessenger($flashMessenger);
+                 return $message;
+            }
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'Application\Controller\Index'  => 'Application\Controller\IndexController',
+            'Application\Controller\Auth'   => 'Application\Controller\AuthController'
+        ),
+    ),
+     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'Auth'       => function($sm){
+                $service = new Application\Service\Auth($sm->get('User_Table'));
+                return $service;
+             },
+             'User_Table' =>  function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                $table = new Application\Model\User\Table($dbAdapter);
+                return $table;
+            },
         ),
     ),
     'translator' => array(
@@ -65,11 +118,6 @@ return array(
                 'base_dir' => __DIR__ . '/../language',
                 'pattern'  => '%s.mo',
             ),
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
         ),
     ),
     'view_manager' => array(
@@ -88,4 +136,7 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    'constants' => array(
+        'SALT'  =>  'sdsdkjaj'
+    )
 );

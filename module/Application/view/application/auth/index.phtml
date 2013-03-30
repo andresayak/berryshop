@@ -1,0 +1,26 @@
+<?php $this->headTitle($title = 'Login') ?>
+<div class="page-header">
+    <h3><?php echo $this->escapeHtml($title)?></h3>
+</div>
+<?php $form = $form->setAttribute('class', 'form-horizontal')->prepare() ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="control-group<?php if(count($form->get('email')->getMessages())):?> error<?php endif?>">
+    <label class="control-label" for="email">Email</label>
+    <div class="controls">
+        <?php echo $this->formElement($form->get('email'))?>
+        <?php echo $this->formElementErrors($form->get('email'), array('class' => 'help-inline'));?>
+    </div>
+</div>
+<div class="control-group<?php if(count($form->get('password')->getMessages())):?> error<?php endif?>">
+    <label class="control-label" for="email">Password</label>
+    <div class="controls">
+        <?php echo $this->formElement($form->get('password'))?>
+        <?php echo $this->formElementErrors($form->get('password'), array('class' => 'help-inline'));?>
+    </div>
+</div>
+<div class="control-group">
+    <div class="controls">
+        <button class="btn btn-large btn-primary">Login</button>
+    </div>
+</div>
+<?php echo $this->form()->closeTag()?>
