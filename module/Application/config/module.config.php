@@ -30,6 +30,16 @@ return array(
                     ),
                 ),
             ),
+            'logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/auth/logout',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'logout',
+                    ),
+                ),
+            ),
             'signup' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -78,18 +88,7 @@ return array(
             ),
         ),
     ),
-    'view_helpers' => array(
-        'factories' => array(
-            'flashMessage' => function($sm) {
-                $flashMessenger = $sm->getServiceLocator()
-                    ->get('ControllerPluginManager')
-                    ->get('flashmessenger');                                   
-                 $message = new Application\View\Helper\FlashMessages();
-                 $message->setFlashMessenger($flashMessenger);
-                 return $message;
-            }
-        ),
-    ),
+    
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index'  => 'Application\Controller\IndexController',
@@ -99,7 +98,7 @@ return array(
      'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-            'Auth'       => function($sm){
+            'Auth_Service'       => function($sm){
                 $service = new Application\Service\Auth($sm->get('User_Table'));
                 return $service;
              },
@@ -107,7 +106,25 @@ return array(
                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                 $table = new Application\Model\User\Table($dbAdapter);
                 return $table;
+            }
+        ),
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'flashMessage' => function($sm) {
+                $flashMessenger = $sm->getServiceLocator()
+                    ->get('ControllerPluginManager')
+                    ->get('flashmessenger');                                   
+                 $message = new Application\View\Helper\FlashMessages();
+                 $message->setFlashMessenger($flashMessenger);
+                 return $message;
             },
+            'auth'  =>  function($sm) {
+                $service = $sm->getServiceLocator()->get('Auth_Service');
+                $helper = new Application\View\Helper\Auth();
+                $helper->setAuthService($service);
+                return $helper;
+            }
         ),
     ),
     'translator' => array(

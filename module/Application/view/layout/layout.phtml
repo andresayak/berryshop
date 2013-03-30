@@ -35,9 +35,14 @@
             <header>
                 <div class="container">
                     <div class="pull-right">
+                        <?php if($this->auth()):?>
+                        <b><?php echo $this->auth()->email?></b>  |
+                        <a href="<?php echo $this->url('logout') ?>">Logout</a>
+                        <?php else:?>
                         <a href="<?php echo $this->url('login') ?>">Login</a> |
                         <a href="<?php echo $this->url('signup') ?>">Sign up</a> |
                         <a href="<?php echo $this->url('forgot') ?>">Forgot password</a>
+                        <?php endif?>
                     </div>
                 </div>
             </header>

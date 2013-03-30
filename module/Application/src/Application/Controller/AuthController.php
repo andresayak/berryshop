@@ -11,7 +11,7 @@ class AuthController extends AbstractActionController
 {
     public function indexAction()
     {
-        $authService = $this->getServiceLocator()->get('Auth');
+        $authService = $this->getServiceLocator()->get('AuthService');
         if($authService->getUserRow())
             return $this->redirect()->toRoute('home');
         $form = new Form\Login();
@@ -59,9 +59,9 @@ class AuthController extends AbstractActionController
     
     public function logoutAction()
     {
-        $this->getServiceLocator()->get('Auth')->logout();
+        $this->getServiceLocator()->get('AuthService')->logout();
          
-        $this->flashmessenger()->addMessage("You've been logged out");
+        $this->flashmessenger()->addSuccessMessage("You've been logged out");
         return $this->redirect()->toRoute('login');
     }
 }
