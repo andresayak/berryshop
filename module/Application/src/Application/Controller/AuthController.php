@@ -54,7 +54,21 @@ class AuthController extends AbstractActionController
     
     public function forgotAction()
     {
-        
+        $form = new Form\Forgot();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $userTable = $this->getServiceLocator()->get('User_Table');
+                if($userRow = $userTable->getRowByEmail($form->get('email')->getValue())){
+                    $this->flashMessenger()->addSuccessMessage('Success');
+                }else $this->flashMessenger()->addErrorMessage('User not found');
+                return $this->redirect()->toRoute('forgot');
+            }
+        }
+        return array(
+            'form' => $form,
+        );
     }
     
     public function logoutAction()

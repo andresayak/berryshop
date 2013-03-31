@@ -15,6 +15,13 @@ html, body {
 footer, .push {
     height: 7em;
 }
+footer .links{
+    margin:0;
+}
+footer .links li{
+    display:inline-block;
+    padding:0 10px;
+}
 body {
 }
 header{

@@ -2,7 +2,8 @@
 
 namespace Application\Service;
 
-use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\AuthenticationService,
+    Zend\Mvc\MvcEvent;
 use Zend\Authentication\Adapter\DbTable as AuthAdapter;
 use Application\Model\User\Table;
 
@@ -10,12 +11,51 @@ class Auth
 {
     protected $_user_row, $_auth_service;
     protected $_table;
+    protected $_acl = null;
     
     public function __construct($table)
     {
         $this->_table = $table;
         return $this;
     }
+    
+    public function setAcl($acl)
+    {
+        $this->_acl = $acl;
+        return $this;
+    }
+    
+    public function getAcl()
+    {
+        return $this->_acl;
+    }
+    
+    public function preDispatch(MvcEvent $event)
+    {
+        $acl = $this->getAcl();
+        $role = $acl::DEFAULT_ROLE;
+        if ($this->getUserRow()) {
+            $role = $this->getUserRow()->role;
+        }
+        
+        $routeMatch = $event->getRouteMatch();
+        $controller = $routeMatch->getParam('controller');
+        $action     = $routeMatch->getParam('action');
+        if (!$acl->hasResource($controller)) {
+            throw new \Exception('Resource ' . $controller . ' not defined');
+        }
+ 
+        if (!$acl->isAllowed($role, $controller, $action)) {
+            $router = $event->getRouter();
+            $url    = $router->assemble(array(), array('name' => 'login'));
+            $response = $event->getResponse();
+            $response->setStatusCode(302);
+            $response->getHeaders()->addHeaderLine('Location', $url);
+            $event->stopPropagation();  
+        }
+    }
+
+    
     public function getUserRow()
     {
         if($this->_user_row === null) {

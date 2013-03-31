@@ -1,6 +1,17 @@
 <?php
 
 return array(
+    'navigation' => array(
+    ),
+    'di'=>array(
+        'instance'  =>array(
+            'Application\Service\Acl' => array(
+                'parameters' => array(
+                    'config' => include __DIR__ . '/acl.config.php'
+                )
+            )
+        )
+    ),
     'router' => array(
         'routes' => array(
             'page' => array(

@@ -2,7 +2,6 @@
 
 namespace Ap;
 
-
 class Module
 {
     public function getAutoloaderConfig()

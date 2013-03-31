@@ -11,6 +11,28 @@
         <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
                                       ->prependFile($this->basePath() . '/js/bootstrap.min.js')
                                       ->prependFile($this->basePath() . '/js/jquery.min.js') ?>
+    <script>
+        $(document).ready(function() {
+            $('.navbar .nav ul').addClass('dropdown-menu'); 
+            $.each($('.navbar .nav ul'), function(){
+                var element = $(this).parent().children('a');
+                if(!$(element).hasClass('level-0')){
+                    var label = $(element).html()+' <span class="icon-chevron-right"></span>'
+                    $(element).html(label);
+                }
+            });
+            $('.navbar .nav li').hover(function(){
+                var ul = $(this).find('> ul');
+                if($(this).parent().css('position')=='absolute'){
+                    $(ul).show().css({left:($(this).parent().width()-15)+'px', top:'-4px'});
+                }else{
+                    $(ul).show().css({left:'0px',top:'35px'});
+                }	
+            }, function(){
+                $(this).find('> ul').hide();
+            });
+        });
+    </script>
     </head>
     <body>
         <div class="wrapper">
@@ -24,29 +46,12 @@
                         </a>
                         <a class="brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Shopberry') ?></a>
                         <div class="nav-collapse collapse">
-                            <?php echo $this->navigation('navigation')->menu()->setUlClass('nav')?>
+                            <?php echo $this->navigation('navigation/admin')->menu()->setUlClass('nav')->setMinDepth(1)?>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="navbar-push"></div>
-            <header>
-                <div class="container">
-                    <div class="pull-right">
-                        <?php if($this->auth()):?>
-                        <b><?php echo $this->auth()->email?></b>  |
-                        <?php if($this->auth()->role == 'admin'):?>
-                        <a href="<?php echo $this->url('admin') ?>">Admin</a>
-                        <?php endif?>
-                        <a href="<?php echo $this->url('logout') ?>">Logout</a>
-                        <?php else:?>
-                        <a href="<?php echo $this->url('login') ?>">Login</a> |
-                        <a href="<?php echo $this->url('signup') ?>">Sign up</a> |
-                        <a href="<?php echo $this->url('forgot') ?>">Forgot password</a>
-                        <?php endif?>
-                    </div>
-                </div>
-            </header>
             <div class="container">
                 <?php echo $this->flashMessage()->setUIClass('alert')?>
                 <?php echo $this->content; ?>
@@ -54,7 +59,7 @@
             <div class="push"></div>
         </div>
         <footer>
-            <div class="container"><?php echo $this->navigation('navigation/footer')->menu()->setUlClass('links')?>
+            <div class="container">
                 <hr>
                 <p>&copy; <?php echo $year_from = 2013?><?php echo ($year_to = date('Y') and $year_to > $year_from)?' - '.$year_to:''?> by Andrey Sayak. <?php echo $this->translate('All rights reserved.') ?></p>
             </div>

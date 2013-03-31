@@ -1,105 +1,40 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
 
 return array(
-    'router' => array(
-        'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'login' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/auth/login',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Auth',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'logout' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/auth/logout',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Auth',
-                        'action'     => 'logout',
-                    ),
-                ),
-            ),
-            'signup' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/auth/signup',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Auth',
-                        'action'     => 'signup',
-                    ),
-                ),
-            ),
-            'forgot' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/auth/forgot',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Auth',
-                        'action'     => 'forgot',
-                    ),
-                ),
-            ),
-            'application' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/application',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
+    'navigation' => include __DIR__ . '/navigation.config.php',
+    'di' => array(
+        'instance' =>array(
+            'Application\Service\Acl' => array(
+                'parameters' => array(
+                    'config' => include __DIR__ . '/acl.config.php'
+                )
+            )
+        )
     ),
-    
+    'router' => array(
+        'routes' => include __DIR__ . '/route.config.php'
+    ),
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index'  => 'Application\Controller\IndexController',
-            'Application\Controller\Auth'   => 'Application\Controller\AuthController'
+            'Application\Controller\Auth'   => 'Application\Controller\AuthController',
+            'Application\Controller\Admin'   => 'Application\Controller\AdminController',
+            'Application\Controller\Admin\Users'   => 'Application\Controller\Admin_UsersController'
         ),
     ),
      'service_manager' => array(
         'factories' => array(
+            'navigation' => new Application\Service\NavigationFactory(),
+            'navigation/footer' => new Application\Service\NavigationFactory('footer'),
+            'navigation/admin' => new Application\Service\NavigationFactory('admin'),
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-            'Auth_Service'       => function($sm){
+            'Auth_Service' => function($sm){
                 $service = new Application\Service\Auth($sm->get('User_Table'));
+                $service->setAcl($sm->get('Application\Service\Acl'));
+                return $service;
+             },
+             'Themes_Service' => function($sm){
+                $service = new Application\Service\Themes($sm->get('User_Table'));
                 return $service;
              },
              'User_Table' =>  function($sm) {
@@ -108,6 +43,7 @@ return array(
                 return $table;
             }
         ),
+        
     ),
     'view_helpers' => array(
         'factories' => array(
@@ -124,7 +60,7 @@ return array(
                 $helper = new Application\View\Helper\Auth();
                 $helper->setAuthService($service);
                 return $helper;
-            }
+            },
         ),
     ),
     'translator' => array(
@@ -151,7 +87,7 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
-        ),
+        )
     ),
     'constants' => array(
         'SALT'  =>  'sdsdkjaj'

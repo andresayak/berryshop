@@ -8,4 +8,10 @@ class Table extends Prototype
 {
     protected $_name = 'user';
     protected $_rowClass = 'Row';
+    
+    public function getRowByEmail($email)
+    {
+        $rowset = $this->getTableGateway()->select(array('email' => $email));
+        return $rowset->current();
+    }
 }
