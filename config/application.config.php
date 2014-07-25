@@ -5,7 +5,8 @@ return array(
         'Ap',
         'Application',
         'Cms',
-        //'Shop'
+        'Shop',
+        'Admin'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
