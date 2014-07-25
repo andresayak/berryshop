@@ -2,48 +2,124 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle($this->translate('Shopberry'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('BerryShop'))->setSeparator(' - ')->setAutoEscape(false) ?>
         <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
-        <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-                                      ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.min.js') ?>
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
+            ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
+            ->prependStylesheet($this->basePath() . '/css/style.css')
+            ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+        ?>
+        <?php
+        echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+            ->prependFile($this->basePath() . '/js/common.js')
+            ->prependFile($this->basePath() . '/js/jquery.min.js') ?>
     </head>
     <body>
         <div class="wrapper">
-            <div class="navbar navbar-inverse navbar-fixed-top">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </a>
-                        <a class="brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Shopberry') ?></a>
-                        <div class="nav-collapse collapse">
-                            <?php echo $this->navigation('navigation')->menu()->setUlClass('nav')?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-push"></div>
-            <header>
+            <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
                 <div class="container">
-                    <div class="pull-right">
-                        <?php if($this->auth()):?>
-                        <b><?php echo $this->auth()->email?></b>  |
-                        <?php if($this->auth()->role == 'admin'):?>
-                        <a href="<?php echo $this->url('admin') ?>">Admin</a>
-                        <?php endif?>
-                        <a href="<?php echo $this->url('logout') ?>">Logout</a>
-                        <?php else:?>
-                        <a href="<?php echo $this->url('login') ?>">Login</a> |
-                        <a href="<?php echo $this->url('signup') ?>">Sign up</a> |
-                        <a href="<?php echo $this->url('forgot') ?>">Forgot password</a>
-                        <?php endif?>
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="../" class="navbar-brand">BerryShop</a>
+                    </div>
+                    <nav class="collapse navbar-collapse" role="navigation">
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="../css">News</a>
+                            </li>
+                            <li>
+                                <a href="../components">Brands</a>
+                            </li>
+                            <li>
+                                <a href="../javascript">About</a>
+                            </li>
+                            <li>
+                                <a href="../customize">Feedback</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/auth/login">Login</a></li>
+                            <li><a href="/auth/signup">Sign up</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Shopping cart (<b>1 items</b>)</a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Sony t100</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="navbar-category">
+                        <div class="search-block pull-right">
+                            <form>
+                                <div class="form-group has-feedback">
+                                    <input placeholder="Search..." type="text" class="form-control" id="inputSeacrh">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </form>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="../javascript">About</a>
+                            </li>
+                            <li>
+                                <a class="level level-1" href="http://boberko.com.ua/category/17">Грудничкам и мамочкам</a>
+                                <ul>
+                                    <li>
+                                        <a class="level level-2" href="http://boberko.com.ua/category/39">Детская гигиена</a>
+                                    </li>
+                                    <li>
+                                        <a class="level level-2" href="http://boberko.com.ua/category/31">Детская посуда</a>
+                                        <ul class="dropdown-menu" style="display: none; left: 161px; top: -4px;">
+                                            <li>
+                                                <a class="level level-3" href="http://boberko.com.ua/category/32">Бутылочки, чашки и аксессуары</a>
+                                            </li>
+                                            <li>
+                                                <a class="level level-3" href="http://boberko.com.ua/category/33">Посуда и столовые приборы</a>
+                                            </li>
+                                            <li>
+                                                <a class="level level-3" href="http://boberko.com.ua/category/34">Стерилизаторы</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="level level-2" href="http://boberko.com.ua/category/38">Прорезыватели</a>
+                                    </li>
+                                    <li>
+                                        <a class="level level-2" href="http://boberko.com.ua/category/35">Пустышки</a>
+                                    </li>
+                                    <li>
+                                        <a class="level level-2" href="http://boberko.com.ua/category/40">Товары для мамочек</a>
+                <ul class="dropdown-menu" style="display: none;">
+                    <li>
+                        <a class="level level-3" href="http://boberko.com.ua/category/42">Гигиена</a>
+                    </li>
+                    <li>
+                        <a class="level level-3" href="http://boberko.com.ua/category/41">Радионяни</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+                            <li class="active">
+                                <a href="../css">News</a>
+                            </li>
+                            <li>
+                                <a href="../components">Brands</a>
+                            </li>
+                            <li>
+                                <a href="../javascript">About</a>
+                            </li>
+                            <li>
+                                <a href="../customize">Feedback</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </header>
@@ -54,9 +130,12 @@
             <div class="push"></div>
         </div>
         <footer>
-            <div class="container"><?php echo $this->navigation('navigation/footer')->menu()->setUlClass('links')?>
+            <div class="container">
+                <p>Designed and built with all the love in the world by <a href="https://github.com/andresayak">andresayak</a></p>
+                <p>Maintained by the core team with the help of our contributors</p>
+                <p>Code licensed under MIT</p>
                 <hr>
-                <p>&copy; <?php echo $year_from = 2013?><?php echo ($year_to = date('Y') and $year_to > $year_from)?' - '.$year_to:''?> by Andrey Sayak. <?php echo $this->translate('All rights reserved.') ?></p>
+                <?php echo $this->navigation('navigation/footer')->menu()->setUlClass('footer-links')?>
             </div>
         </footer>
         <?php echo $this->inlineScript() ?>
