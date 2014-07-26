@@ -119,7 +119,7 @@ return array(
              },
              'User_Table' =>  function($sm) {
                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                $table = new Application\Model\User\Table($dbAdapter);
+                $table = new Application\Model\User\Table($sm, $dbAdapter);
                 return $table;
             },
             'Cache\Memcached' => function($sm) {

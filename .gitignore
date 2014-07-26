@@ -10,3 +10,6 @@ config/autoload/local.php
 vendor/
 data/cache/
 composer.lock
+!/vendor/
+/vendor/zendframework/
+/vendor/autoload.php

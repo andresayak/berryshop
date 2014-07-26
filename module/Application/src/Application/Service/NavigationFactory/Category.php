@@ -24,9 +24,7 @@ class Category extends AbstractNavigationFactory
     {
         if (null === $this->pages) {
             $table = $serviceLocator->get('Category\Table');
-            $rowset = $table->select(array(
-                'status'    =>  'on'
-            ));
+            $rowset = $table->fetchAllEnabled();
             $pages       = $this->getPagesFromRowset($rowset);
             $this->pages = $this->preparePages($serviceLocator, $pages);
         }
@@ -39,13 +37,21 @@ class Category extends AbstractNavigationFactory
         return $config;
     }
     
-    protected function _initCategory($rowset, $parent_id = 0, &$data = array(), $factor = 0) 
+    protected function _initCategory($rowset, $parent_id = 0, $factor = 0) 
     {
+        $data = array();
         for ($i = 0; $i < count($rowset); $i++) {
-            $row = $rowset[$i];
+            $row = $rowset->getItem($i);
             if ($row->parent_id == $parent_id) {
-                $this->_initCategory($rowset, $row->id, $data, $factor+1);
-                $data[] = $row->id;
+                $data[] = array(
+                    'label'     =>  $row->title,
+                    'route'     =>  'else',
+                    'params'    =>  array(
+                        'uri'   =>  $row->title
+                    ),
+                    'order'     =>  $row->order,
+                    'pages'     =>  $this->_initCategory($rowset, $row->id, $factor+1)
+                );
             }
         }
         return $data;

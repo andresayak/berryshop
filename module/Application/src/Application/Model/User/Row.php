@@ -5,7 +5,6 @@ namespace Application\Model\User;
 use Ap\Model\Row AS Prototype;
 class Row extends Prototype
 {
-    protected $_cols = array('id', 'email', 'role', 'password');
     protected $_password_original;
     
     public function setPassword($password)

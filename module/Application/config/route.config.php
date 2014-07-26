@@ -100,7 +100,7 @@ return array(
     'else' => array(
         'type' => 'Segment',
         'options' => array(
-            'route' => '/[:url]',
+            'route' => '/[:uri]',
             'defaults' => array(
                 'controller' => 'Application\Controller\Index',
                 'action' => 'index',

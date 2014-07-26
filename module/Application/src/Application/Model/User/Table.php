@@ -7,7 +7,7 @@ use Ap\Model\Table AS Prototype;
 class Table extends Prototype
 {
     protected $_name = 'user';
-    protected $_rowClass = 'Row';
+    protected $_cols = array('id', 'email', 'role', 'password');
     
     public function getRowByEmail($email)
     {

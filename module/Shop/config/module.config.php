@@ -7,6 +7,10 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
+            'Category\Table' =>  function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                return new Shop\Model\Category\Table($sm, $dbAdapter);
+            },
         )
     ),
     'controllers' => array(
