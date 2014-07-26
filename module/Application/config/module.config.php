@@ -24,7 +24,91 @@ return array(
     ),
      'service_manager' => array(
         'factories' => array(
+            'Zend\Session\SessionManager' => function ($sm) {
+                $config = $sm->get('config');
+                if (isset($config['session'])) {
+                    $session = $config['session'];
+
+                    $sessionConfig = null;
+                    if (isset($session['config'])) {
+                        $class = isset($session['config']['class']) ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
+                        $options = isset($session['config']['options']) ? $session['config']['options'] : array();
+                        $sessionConfig = new $class();
+                        $sessionConfig->setOptions($options);
+                    }
+
+                    $sessionStorage = null;
+                    if (isset($session['storage'])) {
+                        $class = $session['storage'];
+                        $sessionStorage = new $class();
+                    }
+
+                    $sessionSaveHandler = null;
+                    if (isset($session['save_handler'])) {
+                        $sessionSaveHandler = new \Zend\Session\SaveHandler\Cache($sm->get($session['save_handler']));
+                    }
+
+                    $sessionManager = new \Zend\Session\SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
+
+                    if (isset($session['validators'])) {
+                        $chain = $sessionManager->getValidatorChain();
+                        foreach ($session['validators'] as $validator) {
+                            $validator = new $validator();
+                            $chain->attach('session.validate', array($validator, 'isValid'));
+                        }
+                    }
+                } else {
+                    $sessionManager = new \Zend\Session\SessionManager();
+                }
+                \Zend\Session\Container::setDefaultManager($sessionManager);
+                return $sessionManager;
+            },
+            'Cache\Redis' => function($sm) {
+                $config = $sm->get('Config');
+                return Zend\Cache\StorageFactory::factory(array(
+                    'adapter' => array(
+                        'name' => '\Ap\Cache\Storage\Adapter\Redis',
+                        'options' => $config['redis']
+                     ),
+                     'plugins' => array(
+                        'IgnoreUserAbort' => array(
+                            'exitOnAbort' => true
+                         ),
+                     )
+                ));
+            },
+            'Mailer' => function($sm) {
+                $config = $sm->get('Config');
+                $mailer = new Ap\Service\Mailer($config['mailer']);
+                $mailer->setRenderer($sm->get('ViewRenderer'));
+                return $mailer;
+            },
+            'Application\Service\ErrorHandling' => function($sm) {
+                return new \Application\Service\ErrorHandling($sm->get('Zend\Log'));
+            },
+            'Zend\Log' => function ($sm) {
+                $config = $sm->get('config');
+                $date = date('Y-m-d');
+                $logger = new \Zend\Log\Logger;
+                if(ERROR_MAILTO){
+                    $mail = new \Zend\Mail\Message();
+                    $mail->setFrom($config['mailer']['site_email'])
+                        ->addTo(ERROR_MAILTO)
+                        ->setSubject('Apocalypse critical '.$date.' from server '.SERVER_ID);
+                    $writer = new \Zend\Log\Writer\Mail($mail, new \Zend\Mail\Transport\Sendmail());
+                    $logger->addWriter($writer);
+                }
+                $writer = new \Zend\Log\Writer\Stream(__DIR__.'/../../../data/logs/error_' . $date . '.txt');
+                $writer->addFilter(new Zend\Log\Filter\Priority(\Zend\Log\Logger::ERR));
+                $logger->addWriter($writer);
+                return $logger;
+                
+            },
+            'Transaction' => function($sm) {
+                return new \Ap\Transaction($sm);
+            },
             'navigation' => new Application\Service\NavigationFactory(),
+            'navigation/category' => new Application\Service\NavigationFactory\Category(),
             'navigation/footer' => new Application\Service\NavigationFactory('footer'),
             'navigation/admin' => new Application\Service\NavigationFactory('admin'),
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
@@ -33,15 +117,23 @@ return array(
                 $service->setAcl($sm->get('Application\Service\Acl'));
                 return $service;
              },
-             'Themes_Service' => function($sm){
-                $service = new Application\Service\Themes($sm->get('User_Table'));
-                return $service;
-             },
              'User_Table' =>  function($sm) {
                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                 $table = new Application\Model\User\Table($dbAdapter);
                 return $table;
-            }
+            },
+            'Cache\Memcached' => function($sm) {
+                $config = $sm->get('Config');
+                $cache = Zend\Cache\StorageFactory::factory(array(
+                    'adapter' => 'Memcached',
+                    'plugins' => array(
+                        'exception_handler' => array('throw_exceptions' => false),
+                        'serializer'
+                    )
+                ));
+                $cache->setOptions($config['memcached']);
+                return $cache;
+            },
         ),
         
     ),
@@ -89,7 +181,4 @@ return array(
             __DIR__ . '/../view',
         )
     ),
-    'constants' => array(
-        'SALT'  =>  'sdsdkjaj'
-    )
 );

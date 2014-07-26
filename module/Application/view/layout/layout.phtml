@@ -64,62 +64,7 @@
                                 </div>
                             </form>
                         </div>
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <a href="../javascript">About</a>
-                            </li>
-                            <li>
-                                <a class="level level-1" href="http://boberko.com.ua/category/17">Грудничкам и мамочкам</a>
-                                <ul>
-                                    <li>
-                                        <a class="level level-2" href="http://boberko.com.ua/category/39">Детская гигиена</a>
-                                    </li>
-                                    <li>
-                                        <a class="level level-2" href="http://boberko.com.ua/category/31">Детская посуда</a>
-                                        <ul class="dropdown-menu" style="display: none; left: 161px; top: -4px;">
-                                            <li>
-                                                <a class="level level-3" href="http://boberko.com.ua/category/32">Бутылочки, чашки и аксессуары</a>
-                                            </li>
-                                            <li>
-                                                <a class="level level-3" href="http://boberko.com.ua/category/33">Посуда и столовые приборы</a>
-                                            </li>
-                                            <li>
-                                                <a class="level level-3" href="http://boberko.com.ua/category/34">Стерилизаторы</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a class="level level-2" href="http://boberko.com.ua/category/38">Прорезыватели</a>
-                                    </li>
-                                    <li>
-                                        <a class="level level-2" href="http://boberko.com.ua/category/35">Пустышки</a>
-                                    </li>
-                                    <li>
-                                        <a class="level level-2" href="http://boberko.com.ua/category/40">Товары для мамочек</a>
-                <ul class="dropdown-menu" style="display: none;">
-                    <li>
-                        <a class="level level-3" href="http://boberko.com.ua/category/42">Гигиена</a>
-                    </li>
-                    <li>
-                        <a class="level level-3" href="http://boberko.com.ua/category/41">Радионяни</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-                            <li class="active">
-                                <a href="../css">News</a>
-                            </li>
-                            <li>
-                                <a href="../components">Brands</a>
-                            </li>
-                            <li>
-                                <a href="../javascript">About</a>
-                            </li>
-                            <li>
-                                <a href="../customize">Feedback</a>
-                            </li>
-                        </ul>
+                        <?php echo $this->navigation('navigation/category')->menu()->setUlClass('nav navbar-nav'); ?>
                     </div>
                 </div>
             </header>

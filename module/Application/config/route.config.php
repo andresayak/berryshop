@@ -97,4 +97,14 @@ return array(
             ),
         ),
     ),
+    'else' => array(
+        'type' => 'Segment',
+        'options' => array(
+            'route' => '/[:url]',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Index',
+                'action' => 'index',
+            ),
+        ),
+    ),
 );
