@@ -3,8 +3,7 @@ $(function() {
     $.each($('.navbar-category ul ul'), function() {
         var element = $(this).parent().children('a');
         if (!$(element).hasClass('level-1')) {
-            var label = $(element).html() + ' <span class="glyphicon glyphicon-chevron-right"></span>'
-            $(element).html(label);
+            $(element).addClass('sub');
         }
     });
     $('.navbar-category ul li').hover(function() {

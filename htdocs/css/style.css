@@ -4,6 +4,12 @@
 html, body {
     height: 100%;
 }
+a{
+    color:#E02442;
+}
+a:hover{
+    color:#000000;
+}
 .wrapper {
     min-height: 100%;
     height: auto !important;
@@ -32,8 +38,6 @@ html, body {
 }
 .navbar-category .nav > li:first-child > a {
     border-left: 0;
-    padding-left: 30px;
-    border-radius: 10px 0 0 10px;
 }
 .navbar-category .nav > li > a {
     color: #fff;
@@ -46,6 +50,24 @@ html, body {
     border-left: 1px solid rgba(252, 204, 204, 0.52);
     border-right: 1px solid rgba(144, 22, 22, 0.43);
 }
+.navbar-category .nav > li > a.sub:after {
+    content: url("/images/menu-sub.png");
+    display: inline-block;
+    margin-right: -10px;
+}
+.navbar-category .nav > li .dropdown-menu{
+    background:#fcfcfc;
+    border-top: 0;
+    margin-left:-1px;
+}
+.navbar-category .nav > li .dropdown-menu li a{
+    color:#E02442;
+}
+.navbar-category .nav > li .dropdown-menu li a:hover{
+    background-color: #ffd75b;
+    text-decoration: none;
+    color: #444c4d;
+}
 .navbar-category .nav > li > a:hover, .navbar-category .nav > li.active > a {
     background-image: -webkit-linear-gradient(#F0534F, #F14540 60%, #EB3834);
     background-image: -o-linear-gradient(#F0534F, #F14540 60%, #EB3834);
@@ -54,6 +76,32 @@ html, body {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffF0534F', endColorstr='#ffEB3834', GradientType=0);
     filter: none;
     background-color: inherit;
+}
+.navbar-category .nav > li:hover > a.sub{
+    color: #525252;
+    z-index: 1001;
+    text-shadow: 0 1px 1px #F1F1F1;
+    background-image: linear-gradient(#E6E1E1, #FFFFFF 20%, #fcfcfc);
+    background-image: -webkit-linear-gradient(#E6E1E1, #FFFFFF 20%, #fcfcfc);
+    background-image: -o-linear-gradient(#E6E1E1, #FFFFFF 20%, #fcfcfc);
+    background-image: linear-gradient(#E6E1E1, #FFFFFF 20%, #fcfcfc);
+    background-repeat: no-repeat;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffcfcfcF', endColorstr='#fffcfcfcF', GradientType=0);
+    
+}
+@media (max-width: 768px){
+    .navbar-category{
+        border-radius: 0;
+    }
+    .navbar-category .nav > li > a{
+        border:0;
+    }
+    .navbar-category .navbar-nav{
+        margin:0 -15px;
+    }
+    .navbar-collapse{
+        background: #FAFAFA;
+    }
 }
 .navbar-category .nav > li {
     line-height: 24px;
@@ -149,4 +197,7 @@ div.container a.brand {
 
 .navbar-push{
     padding-bottom: 60px;
+}
+.navbar-toggle .icon-bar {
+    background-color: #000;
 }
