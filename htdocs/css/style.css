@@ -147,12 +147,13 @@ footer, .push {
 footer{
     text-align: center;
 }
-footer .links{
+footer .footer-links{
     margin:0;
+    padding:0;
 }
 footer .footer-links li{
     display:inline-block;
-    padding:0 10px;
+    padding:10px;
 }
 footer p{
     margin-bottom: 0;
@@ -165,7 +166,12 @@ header{
 .zf-green {
     color: #68b604;
 }
-
+.form .form-group .help-block{
+    margin:5px 0;
+    padding: 0;
+    list-style: none;
+    font-size: small;
+}
 .btn-success {
   background-color: #57a900;
   background-image: -moz-linear-gradient(top, #70d900, #57a900);
@@ -200,4 +206,29 @@ div.container a.brand {
 }
 .navbar-toggle .icon-bar {
     background-color: #000;
+}
+#back-top{
+    background-image: -webkit-linear-gradient(#f17a77, #ee5f5b 60%, #ec4d49);
+    background-image: -o-linear-gradient(#f17a77, #ee5f5b 60%, #ec4d49);
+    background-image: linear-gradient(#f17a77, #ee5f5b 60%, #ec4d49);
+    background-repeat: no-repeat;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff17a77', endColorstr='#ffec4d49', GradientType=0);
+    padding: 10px;
+    border-radius: 10px;
+    color:#fff;
+    position: fixed;
+    right:20px;
+    bottom: 20px;
+    cursor: pointer;
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    opacity: 0.5;
+    display: none;
+}
+#back-top:hover{
+    background-image: linear-gradient(#F0534F, #F14540 60%, #EB3834);
+    background-image: -webkit-linear-gradient(#F0534F, #F14540 60%, #EB3834);
+    background-image: -o-linear-gradient(#F0534F, #F14540 60%, #EB3834);
+    background-repeat: no-repeat;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff17a77', endColorstr='#ffec4d49', GradientType=0);
+    opacity: 0.9;
 }
