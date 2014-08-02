@@ -61,7 +61,7 @@ class Auth
         if($this->_user_row === null) {
             $service = new AuthenticationService;
             if($id = $service->getIdentity()){
-                $this->_user_row = $this->_table->getRowById($this->getAuthService()->getIdentity());
+                $this->_user_row = $this->_table->fetchBy('id', $this->getAuthService()->getIdentity());
             }else $this->_user_row = false;
         }
         return $this->_user_row;

@@ -2,15 +2,7 @@
 
 return array(
     'navigation' => include __DIR__ . '/navigation.config.php',
-    'di' => array(
-        'instance' =>array(
-            'Application\Service\Acl' => array(
-                'parameters' => array(
-                    'config' => include __DIR__ . '/acl.config.php'
-                )
-            )
-        )
-    ),
+    'acl' => include __DIR__ . '/acl.config.php',
     'router' => array(
         'routes' => include __DIR__ . '/route.config.php'
     ),
@@ -18,8 +10,6 @@ return array(
         'invokables' => array(
             'Application\Controller\Index'  => 'Application\Controller\IndexController',
             'Application\Controller\Auth'   => 'Application\Controller\AuthController',
-            'Application\Controller\Admin'   => 'Application\Controller\AdminController',
-            'Application\Controller\Admin\Users'   => 'Application\Controller\Admin_UsersController'
         ),
     ),
      'service_manager' => array(
@@ -28,7 +18,6 @@ return array(
                 $config = $sm->get('config');
                 if (isset($config['session'])) {
                     $session = $config['session'];
-
                     $sessionConfig = null;
                     if (isset($session['config'])) {
                         $class = isset($session['config']['class']) ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
@@ -36,20 +25,16 @@ return array(
                         $sessionConfig = new $class();
                         $sessionConfig->setOptions($options);
                     }
-
                     $sessionStorage = null;
                     if (isset($session['storage'])) {
                         $class = $session['storage'];
                         $sessionStorage = new $class();
                     }
-
                     $sessionSaveHandler = null;
                     if (isset($session['save_handler'])) {
                         $sessionSaveHandler = new \Zend\Session\SaveHandler\Cache($sm->get($session['save_handler']));
                     }
-
                     $sessionManager = new \Zend\Session\SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
-
                     if (isset($session['validators'])) {
                         $chain = $sessionManager->getValidatorChain();
                         foreach ($session['validators'] as $validator) {
@@ -94,7 +79,7 @@ return array(
                     $mail = new \Zend\Mail\Message();
                     $mail->setFrom($config['mailer']['site_email'])
                         ->addTo(ERROR_MAILTO)
-                        ->setSubject('Apocalypse critical '.$date.' from server '.SERVER_ID);
+                        ->setSubject('Apocalypse critical '.$date);
                     $writer = new \Zend\Log\Writer\Mail($mail, new \Zend\Mail\Transport\Sendmail());
                     $logger->addWriter($writer);
                 }
@@ -102,7 +87,6 @@ return array(
                 $writer->addFilter(new Zend\Log\Filter\Priority(\Zend\Log\Logger::ERR));
                 $logger->addWriter($writer);
                 return $logger;
-                
             },
             'Transaction' => function($sm) {
                 return new \Ap\Transaction($sm);
@@ -110,14 +94,21 @@ return array(
             'navigation' => new Application\Service\NavigationFactory(),
             'navigation/category' => new Application\Service\NavigationFactory\Category(),
             'navigation/footer' => new Application\Service\NavigationFactory('footer'),
-            'navigation/admin' => new Application\Service\NavigationFactory('admin'),
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'Auth_Service' => function($sm){
                 $service = new Application\Service\Auth($sm->get('User_Table'));
-                $service->setAcl($sm->get('Application\Service\Acl'));
+                $service->setAcl($sm->get('Acl\Service'));
                 return $service;
              },
-             'User_Table' =>  function($sm) {
+            'Acl\Service' => function($sm) {
+                    $config = $sm->get('config');
+                    $service = new Application\Service\Acl();
+                    $service->setRoles($config['acl']['roles'])
+                        ->setRules($config['acl']['rules'])
+                        ->initResources($config['acl']['resources']);
+                return $service;
+            },
+            'User_Table' =>  function($sm) {
                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                 $table = new Application\Model\User\Table($sm, $dbAdapter);
                 return $table;

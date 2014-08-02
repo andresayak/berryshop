@@ -16,6 +16,15 @@ return array(
         ),
         'save_handler'  =>  'Cache\Memcached'
     ),
+    'constants' =>  array(
+        'SALT'          =>  's0dsjk2kjq1',
+        'ERROR_MAILTO'  =>  'andresayak@gmail.com'
+    ),
+    'mailer'    =>  array(
+        'status'    =>  true,
+        'site_email'  =>  'robot@soft-berry.com.ua',
+        'site_name' =>  'shop.soft-berry.com.ua',
+    ),
     'db' => array(
         'driver'         => 'Pdo',
         'dsn'            => 'mysql:dbname=berryshop;host=localhost',
@@ -44,4 +53,65 @@ return array(
         'max_execution_time'            =>  180,
         'mbstring.internal_encoding'    =>  'UTF-8'
     ),
+    'acl'   =>  array(
+        'roles' => array(
+            array(
+                'code'      =>  'guest',
+                'parent'    =>  null,
+                'priority'  =>  0
+            ),
+            array(
+                'code'      =>  'user',
+                'parent'    =>  'guest',
+                'priority'  =>  10
+            ),
+            array(
+                'code'      =>  'admin',
+                'parent'    =>  'user',
+                'priority'  =>  20
+            ),
+         ),
+        'rules' =>  array(
+            array(
+                'role'          =>  'guest',
+                'resource'      =>  'default',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'guest',
+                'resource'      =>  'login',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'user',
+                'resource'      =>  'logout',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'guest',
+                'resource'      =>  'news',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'guest',
+                'resource'      =>  'faq',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'user',
+                'resource'      =>  'else',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'user',
+                'resource'      =>  'home',
+                'permission'    =>  'allow'
+            ),
+            array(
+                'role'          =>  'guest',
+                'resource'      =>  'home',
+                'permission'    =>  'deny'
+            ),
+        )
+    )
 );

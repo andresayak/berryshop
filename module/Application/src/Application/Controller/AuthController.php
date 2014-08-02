@@ -39,10 +39,9 @@ class AuthController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $userTable = $this->getServiceLocator()->get('User_Table');
-                $userRow = new Model\User\Row();
-                $userRow->exchangeArray($form->getData());
+                $userRow = $userTable->createRow($form->getData());
                 $userRow->setPassword($form->get('password')->getValue());
-                $userTable->saveRow($userRow);
+                $userRow->save();
                 $this->flashMessenger()->addSuccessMessage('Success');
                 return $this->redirect()->toRoute('login');
             }else $form->clearPassword();

@@ -1,28 +1,53 @@
 <?php
 
 return array(
-    'acl' => array(
-        'roles' => array(
-            'guest'   => null,
-            'user'  => 'guest',
-            'admin'  => 'user'
+        'resources'=>array(
+            'default' => array(
+                'resource' => 'default',
+                'children' => array(
+                    'home' => array(
+                        'resource' => 'home',
+                        'children' => array(
+                            'profile' => array(
+                                'resource' => 'profile',
+                            ),
+                        ),
+                    ),
+                    'else'    =>  array(
+                        'resource'  =>  'else'
+                    ),
+                    'signup'    =>  array(
+                        'resource'  =>  'signup'
+                    ),
+                    'login' => array(
+                        'resource' => 'login',
+                    ),
+                    'logout' => array(
+                        'resource' => 'logout',
+                    ),
+                    'news' => array(
+                        'resource' => 'news',
+                    ),
+                    'faq' => array(
+                        'resource' => 'faq',
+                    ),
+                    'about' => array(
+                        'resource' => 'about',
+                    ),
+                    'contacts' => array(
+                        'resource' => 'contacts',
+                    ),
+                    'forgot' => array(
+                        'resource'  =>  'forgot'
+                    ),
+                    'forgot_newpass' => array(
+                        'resource'  =>  'forgot_newpass'
+                    ),
+                    'signup_confirm'    =>  array(
+                        'resource'  =>  'signup_confirm'
+                    )
+                ),
+            ),
         ),
-        'resources' => array(
-            'allow' => array(
-                'Application\Controller\Index' => array(
-                    'index'   => 'guest'
-                ),
-                'Application\Controller\Auth'   =>  array(
-                    '_all'   => 'guest'
-                ),
-                'Application\Controller\Admin' => array(
-                    '_all'   => 'admin'
-                ),
-                'Application\Controller\Admin\Users' => array(
-                    '_all'   => 'admin'
-                )
-            )
-        )
-    )
 );
    

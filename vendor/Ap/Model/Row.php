@@ -143,7 +143,9 @@ class Row
             }
         }
         foreach($data AS $col=>$value){
-            if(!in_array($col, $this->getTable()->getCols())){
+            if($value === null 
+                or !in_array($col, $this->getTable()->getCols())
+            ){
                 unset($data[$col]);
             }
         }

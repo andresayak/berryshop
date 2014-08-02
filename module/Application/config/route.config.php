@@ -11,26 +11,6 @@ return array(
             ),
         ),
     ),
-    'admin' => array(
-        'type' => 'Literal',
-        'options' => array(
-            'route' => '/admin',
-            'defaults' => array(
-                'controller' => 'Application\Controller\Admin',
-                'action' => 'index',
-            ),
-        ),
-    ),
-    'admin_users' => array(
-        'type' => 'Segment',
-        'options' => array(
-            'route' => '/admin/users[/:action]',
-            'defaults' => array(
-                'controller' => 'Application\Controller\Admin\Users',
-                'action' => 'index',
-            ),
-        ),
-    ),
     'login' => array(
         'type' => 'Literal',
         'options' => array(

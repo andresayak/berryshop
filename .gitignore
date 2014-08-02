@@ -8,8 +8,11 @@ nbproject
 .settings
 config/autoload/local.php
 vendor/
-data/cache/
+/data/cache/*
+/data/logs/*
 composer.lock
 !/vendor/
 /vendor/zendframework/
 /vendor/autoload.php
+/vendor/bin/
+/vendor/composer/

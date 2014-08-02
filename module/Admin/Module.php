@@ -20,12 +20,9 @@ class Module
             if (isset($config['module_layouts'][$moduleNamespace])) {
                 $controller->layout($config['module_layouts'][$moduleNamespace]);
             }
-            if($moduleNamespace == 'Admin'){
-                $cacheManager = $e->getApplication()->getServiceManager()->get('CacheManager');
-                $cacheManager->setStatus(false);
-            }
         }, 100);
     }
+    
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';

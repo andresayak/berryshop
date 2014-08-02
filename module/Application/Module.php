@@ -29,7 +29,11 @@ class Module
                 }
             }
         }
-        $eventManager        = $e->getApplication()->getEventManager();
+        
+        $eventManager = $e->getApplication()->getEventManager();
+        
+        //$eventManager->attach('route', array($this, 'checkAcl'));
+        
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         $this->bootstrapSession($e);
@@ -48,8 +52,8 @@ class Module
     {
         if($_SERVER['PHP_SELF'] != '/usr/bin/phpunit'){
             $session = $e->getApplication()
-                         ->getServiceManager()
-                         ->get('Zend\Session\SessionManager');
+                ->getServiceManager()
+                ->get('Zend\Session\SessionManager');
             if(!$e->getRequest() instanceof \Zend\Console\Request 
                 and $token = $e->getRequest()->getQuery('access_token', false)
             ){
@@ -86,6 +90,34 @@ class Module
     {
         $themes = $event->getTarget()->getServiceManager()->get('Themes_Service');
         return $themes->preDispatch($event);
+    }
+    
+    public function checkAcl(MvcEvent $event)
+    {
+        if($event->getRouteMatch() instanceof \Zend\Mvc\Router\Http\RouteMatch){
+            $aclService = $event->getTarget()->getServiceManager()->get('Acl\Service');
+
+            $role = 'guest';
+            $authService = $event->getTarget()->getServiceManager()->get('Auth\Service');
+            if($authService->getUserRow()){
+                $role = $authService->getUserRow()->role;
+            }
+            $routeMatchName = $event->getRouteMatch()->getMatchedRouteName();
+            if (!$aclService->isAllowed($role, $routeMatchName)) {
+                $request = $event->getRequest();
+                $response = $event->getResponse();
+                if($request->isXmlHttpRequest()){
+                    $event->setViewModel(new JsonModel(array(array('error'=>'access denied'))));
+                    $response->setStatusCode(401);
+                }else{
+                    $response->setStatusCode(302);
+                    $router = $event->getRouter();
+                    $url    = $router->assemble(array(), array('name' => 'login'));
+                    $response->getHeaders()->addHeaderLine('Location', $url);
+                }
+                $event->stopPropagation();  
+            }
+        }
     }
     
 }

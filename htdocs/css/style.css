@@ -14,7 +14,7 @@ a:hover{
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -7em;
+    margin: 0 auto -150px;
 }
 .wrapper > .container{
 }
@@ -129,7 +129,7 @@ a:hover{
     text-shadow: none;
 }
 header.navbar{
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 .breadcrumb{
     margin:0 -15px;
@@ -139,10 +139,10 @@ header.navbar{
     display: inline-block;
     background: url('/images/home.gif') no-repeat center center;
     height:10px;
-        width:10px;
+    width:10px;
 }
 footer, .push {
-    height: 7em;
+    height: 100px;
 }
 footer{
     text-align: center;
