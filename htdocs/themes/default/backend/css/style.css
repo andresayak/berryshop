@@ -12,14 +12,18 @@ html, body {
 }
 .wrapper > .container{
 }
-
+.navbar-default .navbar-nav>li>a.sub:after{
+    content: url("/themes/default/backend/img/menu-sub.png");
+    display: inline-block;
+    margin-right: -10px;
+}
 .breadcrumb{
     margin:0 -15px;
     background: none;
 }
 .breadcrumb li.home a{
     display: inline-block;
-    background: url('/images/home.gif') no-repeat center center;
+    background: url('/themes/default/backend/images/home.gif') no-repeat center center;
     height:10px;
     width:10px;
 }

@@ -96,10 +96,10 @@ return array(
     ),
     'view_manager' => array(
         'template_map' => array(
-            'layout/admin'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/admin'           => __DIR__ . '/../view/{theme_backend}/layout.phtml',
         ),
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            __DIR__ . '/../view/{theme_backend}',
         ),
     ),
     'view_helpers' => array(

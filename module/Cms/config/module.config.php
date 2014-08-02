@@ -1,17 +1,6 @@
 <?php
 
 return array(
-    'navigation' => array(
-    ),
-    'di'=>array(
-        'instance'  =>array(
-            'Application\Service\Acl' => array(
-                'parameters' => array(
-                    'config' => include __DIR__ . '/acl.config.php'
-                )
-            )
-        )
-    ),
     'router' => array(
         'routes' => array(
             'page' => array(
@@ -34,9 +23,9 @@ return array(
             'Cms\Controller\Index' => 'Cms\Controller\IndexController'
         ),
     ),
-    'view_manager' => array(
+    /*'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
-    ),
+    ),*/
 );

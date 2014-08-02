@@ -32,7 +32,7 @@ class Module
         
         $eventManager = $e->getApplication()->getEventManager();
         
-        //$eventManager->attach('route', array($this, 'checkAcl'));
+        $eventManager->attach('dispatch', array($this, 'initThemes'));
         
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -46,6 +46,26 @@ class Module
                 $service->logException($exception);
             }
         });
+    }
+    
+    public function initThemes($e)
+    {
+        $sm = $e->getApplication()->getServiceManager();
+        $config = $sm->get('config');
+        $theme_frontend = $config['themes']['frontend'];
+        $theme_backend = $config['themes']['backend'];
+        $replace_search = array('{theme_frontend}','{theme_backend}');
+        $maps = $sm->get('Zend\View\Resolver\TemplateMapResolver')->getMap();
+        $paths = array();
+        foreach($sm->get('Zend\View\Resolver\TemplatePathStack')->getPaths()->toArray() AS $index=>$path){
+            $paths[] = str_replace($replace_search, array('default', 'default'), $path);
+            $paths[] = str_replace($replace_search, array($theme_frontend, $theme_backend), $path);
+        }
+        foreach($maps AS $index=>$map){
+            $maps[$index] = str_replace($replace_search, array($theme_frontend, $theme_backend), $map);
+        }
+        $sm->get('Zend\View\Resolver\TemplateMapResolver')->setMap($maps);
+        $sm->get('Zend\View\Resolver\TemplatePathStack')->setPaths($paths);
     }
     
     public function bootstrapSession($e)

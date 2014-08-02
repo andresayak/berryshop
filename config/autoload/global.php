@@ -5,6 +5,10 @@ return array(
         'display_not_found_reason' => false,
         'display_exceptions'       => false,
     ),
+    'themes'    =>  array(
+        'frontend'  =>  'default',
+        'backend'   =>  'default'
+    ),
     'session' => array(
         'config' => array(
             'class' => 'Zend\Session\Config\SessionConfig',

@@ -6,10 +6,10 @@ return array(
             'label' => 'Dashboard',
             'route' => 'admin',
             'params' => array(
-                'controller' => 'Index'
+                'controller' => 'index'
             )
         ),
-        /*array(
+        array(
             'label' => 'Users',
             'route' => 'admin',
             'params' => array(
@@ -21,6 +21,15 @@ return array(
             'route' => 'admin',
             'params' => array(
                 'controller' => 'product'
+            ),
+            'pages' =>array(
+                array(
+                    'label' =>  'Category',
+                    'route' =>  'admin',
+                    'params'    =>  array(
+                        'controller'    =>  'category'
+                    )
+                )
             )
         ),
         array(
@@ -30,6 +39,7 @@ return array(
                 'controller' => 'order'
             )
         ),
+        /*
         array(
             'label' => 'Cms',
             'route' => 'admin',
@@ -79,6 +89,6 @@ return array(
                     'route' => 'admin-system/sub'
                 ),
             )
-        ),*/
+        )*/
     )
 );

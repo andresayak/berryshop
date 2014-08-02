@@ -1,15 +1,19 @@
 <?php echo $this->doctype(); ?>
+<?php $themeName = $this->themeName('backend');?>
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle($this->translate('Admin control panel'))->setSeparator(' - ')->setAutoEscape(false) ?>
-        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
-            ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
-            ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
-            ->prependStylesheet($this->basePath() . '/css/backend/default/style.css')?>
-        <?php echo $this->headScript()->prependFile($this->basePath() . '/js/bootstrap.min.js')
-            ->prependFile($this->basePath() . '/js/jquery.min.js') ?>
+        <?php echo $this->headTitle($this->translate('Admin control panel'))->setSeparator(' - ')->setAutoEscape(false)."\n" ?>
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0')."\n" ?>
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('/favicon.ico')))
+            ->setSeparator("\n\t")
+            ->prependStylesheet($this->basePath('/themes/'.$themeName.'/backend/css/bootstrap.min.css'))
+            ->prependStylesheet($this->basePath('/themes/'.$themeName.'/backend/css/style.css'))."\n"?>
+        <?php echo $this->headScript()->setSeparator("\n\t")
+            ->prependFile($this->basePath('/themes/'.$themeName.'/backend/js/common.js'))
+            ->prependFile($this->basePath('/themes/'.$themeName.'/backend/js/bootstrap.min.js'))
+            ->prependFile($this->basePath('/themes/'.$themeName.'/backend/js/jquery.min.js'))."\n" ?>
+        <base href="<?php echo $this->basePath?>"/>
     </head>
     <body>
         <div class="wrapper">

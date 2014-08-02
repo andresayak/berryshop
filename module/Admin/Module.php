@@ -12,7 +12,8 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        $config = $e->getApplication()->getServiceManager()->get('config');
+        $sm = $e->getApplication()->getServiceManager();
+        $config = $sm->get('config');
         $e->getApplication()->getEventManager()->getSharedManager()->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) use($config){
             $controller = $e->getTarget();
             $controllerClass = get_class($controller);
